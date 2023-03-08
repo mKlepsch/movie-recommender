@@ -2,6 +2,13 @@ from flask import Flask,render_template, request
 from recommender import recommender_random, recommender_with_NMF, recommend_with_cossin
 from utils import load_movies,load_data,get_initial_rating_df,load_NMF_and_imputed
 app = Flask(__name__)
+datapath_movies = "./data/ml-latest-small/movies.csv"
+datapath_ratings = "./data/ml-latest-small/ratings.csv"
+model_path = './models/model_mnf'
+movie = load_movies(datapath_movies)
+combined_df = load_data(ratings_path=datapath_ratings,movies_path=datapath_movies)
+combined_df = get_initial_rating_df(combined_df)
+model,imputed_values,Q_matrix,P_matrix  = load_NMF_and_imputed(pathfile=model_path)
 
 @app.route('/')
 def landing_page():
@@ -34,11 +41,4 @@ def recommendations():
             return f"Function not defined"
 
 if __name__=='__main__':
-    datapath_movies = "./data/ml-latest-small/movies.csv"
-    datapath_ratings = "./data/ml-latest-small/ratings.csv"
-    model_path = './models/model_mnf'
-    movie = load_movies(datapath_movies)
-    combined_df = load_data(ratings_path=datapath_ratings,movies_path=datapath_movies)
-    combined_df = get_initial_rating_df(combined_df)
-    model,imputed_values,Q_matrix,P_matrix  = load_NMF_and_imputed(pathfile=model_path)
-    app.run(debug=True,port=5000)
+    app.run(debug=False,port=5000)
