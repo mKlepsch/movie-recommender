@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title><i class="fa-solid fa-camera-movie"></i>Welcome Page</title>
+</head>
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <div
+    class="bg-image"
+    style="
+        background-image: url('/static/3d-glasses-with-popcorns-clapperboard-concrete-backdrop.jpg');
+        background-size: cover;
+    ">
+    <div class="d-flex flex-column min-vh-100 justify-content-center align-items-center">
+
+    <h1 class="text-center">Welcome to my movie page by {{name}}</h1> 
+    <p class="text-center">Lets get some recommendations based on your movies</p>
+
+    <form action = '/recommend'>
+
+        <div class="input-group mb-2">
+            <div class="input-group-prepend">
+                <div class="input-group-text">Select Method</div>
+            </div>
+                <select class="form-select" name="algorithm">
+                <option value="NMF">NMF</option>
+                <option value="Cosine similarity">Cosine similarity</option>
+                </select>
+        </div>
+        <div class="input-group mb-2">
+            <div class="input-group-prepend">
+                <div class="input-group-text">Number of Predictions</div>
+            </div>
+            <input class="form-control" id="Number" type="number" name="number_movies" placeholder="1-15" min="1" max="15" value="3" required>
+        </div>
+<!--
+    TODO dynamicly add new inputs fields to the input https://digitalfox-tutorials.com/tutorial.php?title=How-to-add-remove-input-fields-dynamically-using-javascript
+-->
+        {% for indx in range(3) %}
+        <div class="row gx-1">
+            <div class="form-group col-md-8">
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text"><i class="fa-solid fa-video"></i> &zwnj;</div>
+                    </div>
+                    <input class="form-control" id="Movie_{{indx}}" type="text" name="title" placeholder="Movie {{indx+1}}" required list="movie_lst">
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text"><i class="fa-regular fa-star-half-stroke"></i> &zwnj;</div>
+                    </div>
+                    <input class="form-control" id="Rating_{{indx}}" type="number" name="Ratings" placeholder="1-5" min="1" max="5" value="1" required>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        <button class="btn btn-primary" type="submit" name="Random" value="Random" formnovalidate>Random Movie <i class="fa-solid fa-dice"></i></button><button class="btn btn-success" type="submit">Show recommendation <i class="fa-solid fa-film"></i></button>
+    </form>
+
+    <datalist id="movie_lst">
+        {%for mov in movies%}
+        <option value="{{mov}}"></option>
+        {%endfor%}
+    </datalist>
+    </div>
+    </div>
+</body>
+</html>
